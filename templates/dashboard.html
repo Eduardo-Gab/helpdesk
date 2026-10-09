@@ -1,0 +1,55 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>{% if current_user.role == "admin" %}Todos os Chamados{% else %}Meus Chamados{% endif %}</h4>
+  <a href="{{ url_for('novo_chamado') }}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Novo Chamado</a>
+</div>
+<div class="card">
+  <table class="table table-hover mb-0 align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Titulo</th>
+        {% if current_user.role == "admin" %}<th>Aberto por</th>{% endif %}
+        <th>Status</th>
+        <th>Prioridade</th>
+        {% if current_user.role != "admin" %}<th>Resposta</th>{% endif %}
+        <th>Aberto em</th>
+        <th>Acao</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in chamados %}
+      <tr>
+        <td>{{ c.titulo }}</td>
+        {% if current_user.role == "admin" %}<td>{{ c.usuario.nome }}</td>{% endif %}
+        <td>
+          {% if c.status == "Aberto" %}
+          <span class="badge bg-primary">Aberto</span>
+          {% else %}
+          <span class="badge bg-secondary">Fechado</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if c.prioridade == "Alta" %}
+          <span class="badge badge-critical">Alta</span>
+          {% elif c.prioridade == "Media" %}
+          <span class="badge badge-medium">Media</span>
+          {% else %}
+          <span class="badge badge-low">Baixa</span>
+          {% endif %}
+        </td>
+        {% if current_user.role != "admin" %}<td>{{ c.resposta or "-" }}</td>{% endif %}
+        <td>{{ c.data_abertura.strftime("%d/%m/%Y") }}</td>
+        <td>
+          {% if current_user.role == "admin" %}
+          <a href="{{ url_for('gerenciar_chamado', id=c.id) }}" class="btn btn-sm btn-outline-primary">Gerenciar</a>
+          {% elif c.status == "Aberto" %}
+          <a href="{{ url_for('fechar_chamado', id=c.id) }}" class="btn btn-sm btn-outline-danger">Fechar</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

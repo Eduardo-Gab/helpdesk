@@ -1,0 +1,26 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<h4 class="mb-3">Abrir Novo Chamado</h4>
+<div class="card p-4" style="max-width:600px;">
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">Titulo</label>
+      <input type="text" class="form-control" name="titulo" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Descricao</label>
+      <textarea class="form-control" name="descricao" rows="4" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Prioridade</label>
+      <select class="form-select" name="prioridade">
+        <option value="Baixa">Baixa</option>
+        <option value="Media" selected>Media</option>
+        <option value="Alta">Alta</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Abrir Chamado</button>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-link">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

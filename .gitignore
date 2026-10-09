@@ -1,0 +1,8 @@
+﻿# Arquivos que nao vao pro GitHub
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.db
+instance/
+.env
